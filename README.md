@@ -58,6 +58,9 @@ ADD config/apache/apache2.conf /etc/apache2/apache2.conf
  * libapacha2-mod-php
  * apt-transport-https
  * nano
+ * vim (because nano bites)
+ * php7.0-mysql
+ * mysql-client ( to test connectivity )
  * lynx-cur
  * composer
 
