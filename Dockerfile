@@ -1,5 +1,6 @@
 FROM ubuntu:16.04
-MAINTAINER Francisco Carmona <fcarmona.olmedo@gmail.com>
+LABEL maintainer="James McDonald <james@toggen.com.au>"
+LABEL description="Apache 2.4, PHP 7.0"
 
 # Environments vars
 ENV TERM=xterm
@@ -20,14 +21,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
       php-soap \
       php-pear \
       php-mcrypt \
+      php7.0-mysql \
       libapache2-mod-php \
       curl \
       php-curl \
       apt-transport-https \
       nano \
+      vim \
+      mysql-client \
       lynx-cur
 
 RUN a2enmod rewrite
+RUN a2enmod headers
 RUN phpenmod mcrypt
 
 # Composer install
