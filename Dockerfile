@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 LABEL maintainer="James McDonald <james@toggen.com.au>"
 LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.2+"
 
-# docker build -t toggen/100pbc:20190614.2
+# docker build -t toggen/tgn-img:20190614.2
 
 # Environments vars
 ENV TERM=xterm

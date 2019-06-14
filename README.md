@@ -1,44 +1,23 @@
 # docker-ubuntu1804-apache2-php72
 A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.2 + Cups 2.2.x
 
-## Pull the image
-
-Pull the latest stable version from the [Docker Hub Registry](https://hub.docker.com/r/francarmona/docker-ubuntu16-apache2-php7/)
-```
-docker pull francarmona/docker-ubuntu16-apache2-php7:latest
-```
-
-If you prefer building the image from source, clone the repository and run docker build
+Clone this repo and run docker build
 
 ```
-git clone https://github.com/franCarmona/docker-ubuntu16-apache2-php7.git
-docker build -t francarmona/docker-ubuntu16-apache2-php7 .
+docker build -t toggen/tgn-img:20190614.2 .
 ```
 
 ## Run
 
 After building the image, run the container.
 ```
-docker run --name apache2-php7 -v ~/path/to/code:/var/www -d -p [host-port]:80 francarmona/docker-ubuntu16-apache2-php7
+
+docker run  --name tgn-img \
+-v ~/sites/tgn-img:/var/www  -d \
+-p [host-port I use 632]:631 -p [host-port I use 8080]:80 toggen/tgn-img:20190614.2
+
 ```
 Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view your app.
-
-## Use as a base image
-
-Some cases will be necessary to create a new image using this one as the base, for example to overwrite configuration files.
-
-Create a Dockerfile with following content and then build the image.
-
-```Dockerfile
-FROM francarmona/docker-ubuntu16-apache2-php7
-
-LABEL maintainer="Your Name <your@email>"
-LABEL description="A docker image based on Ubuntu 16.04 with Apache2 + PHP 7.0"
-
-# Apache site conf
-ADD config/apache/apache-virtual-hosts.conf /etc/apache2/sites-enabled/000-default.conf
-ADD config/apache/apache2.conf /etc/apache2/apache2.conf
-```
 
 ## Packages included
 
@@ -84,4 +63,4 @@ ADD config/apache/apache2.conf /etc/apache2/apache2.conf
  * PHP7.2
  * CUPS
  * Composer
- * Supervisord
+ * Supervisord (to manage running cups and apache in the container)
