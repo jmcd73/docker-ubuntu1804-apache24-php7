@@ -18,4 +18,4 @@ docker run  --name 100pbc \
 # toggen/100pbc       20190614.2
 # publish cups to docker host on 632
 # publish apache to docker host on 8081
-# docker build -t toggen/100pbc:20190614.2
+
