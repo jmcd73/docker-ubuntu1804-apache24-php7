@@ -13,9 +13,9 @@ else
 fi
 
 # toggen/100pbc       ubuntu16-apache2-php7
-docker run  --name 100pbc2 \
+docker run  --name 100pbc \
 -v ~/sites/100pbc:/var/www  -d \
--p 632:631 -p 8081:80 toggen/100pbc:20190614
-
+-p 632:631 -p 8081:80 toggen/100pbc:20190614.2
+# toggen/100pbc       20190614.2
 # publish cups to docker host on 632 
 # publish apache to docker host on 8081

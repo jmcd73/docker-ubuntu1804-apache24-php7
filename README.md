@@ -42,40 +42,46 @@ ADD config/apache/apache2.conf /etc/apache2/apache2.conf
 
 ## Packages included
 
- * php7.0
- * php7.0-cli
+ * php7.2
+ * php7.2-cli
  * apache2
- * php7.0-gd
- * php7.0-json
- * php7.0-mbstring
- * php7.0-xml
- * php7.0-xsl
- * php7.0-zip
- * php7.0-soap
- * php7.0-pear
- * php7.0-mcrypt
- * php7.0-curl
+ * php7.2-gd
+ * php7.2-json
+ * php7.2-mbstring
+ * php7.2-xml
+ * php7.2-xsl
+ * php7.2-zip
+ * php7.2-soap
+ * php7.2-pear
+ * php7.2-mcrypt
+ * php7.2-curl
+ * php-mysql
  * curl
  * libapacha2-mod-php
  * apt-transport-https
  * nano
  * vim (because nano bites)
- * php7.0-mysql
+ * php7.2-mysql
  * mysql-client ( to test connectivity )
  * lynx-cur
  * composer
+ * supervisor
+ * cups
 
 ## Exposed ports
 
+631
 80
 
 ## Exposed volumes
 
  - webroot: `/var/www`
- 
+
 ## Out of the box
 
- * Ubuntu 16.04 LTS
+ * Ubuntu 18.04 LTS
  * Apache2
- * PHP7
+ * PHP7.2
+ * CUPS
  * Composer
+ * Supervisord
