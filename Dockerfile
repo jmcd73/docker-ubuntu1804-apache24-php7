@@ -109,5 +109,6 @@ VOLUME /var/www
 
 # Ports: apache2
 EXPOSE 80
+EXPOSE 631
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

@@ -1,5 +1,7 @@
 # docker-ubuntu1804-apache2-php72
-A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.2 + Cups 2.2.x
+A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.2 + Cups 2.2.x.
+
+I use this image to develop a CakePHP 2.x application on my macbook use Docker Desktop for Mac
 
 Clone this repo and run docker build
 
@@ -49,8 +51,8 @@ Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view y
 
 ## Exposed ports
 
-631
-80
+- 631
+- 80
 
 ## Exposed volumes
 
