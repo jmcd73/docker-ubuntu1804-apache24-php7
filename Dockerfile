@@ -1,63 +1,104 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 LABEL maintainer="James McDonald <james@toggen.com.au>"
-LABEL description="Apache 2.4, PHP 7.0"
+LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.2+"
 
 # Environments vars
 ENV TERM=xterm
 
 RUN apt-get update
-RUN apt-get -y upgrade
+RUN apt-get -y dist-upgrade
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
-      php \
-      php-cli \
-      php-gd \
-      php-json \
-      php-mbstring \
-      php-xml \
-      php-xsl \
-      php-zip \
-      php-soap \
-      php-pear \
-      php-mcrypt \
-      php7.0-mysql \
-      libapache2-mod-php \
-      curl \
-      php-curl \
-      apt-transport-https \
-      nano \
-      vim \
-      mysql-client \
-      lynx-cur
+    supervisor \
+    php \
+    php-cli \
+    php-gd \
+    php-json \
+    php-mbstring \
+    php-xml \
+    php-xsl \
+    php-zip \
+    php-soap \
+    php-pear \
+    php-mysql \
+    libapache2-mod-php \
+    libapache2-mod-perl2 \
+    curl \
+    php-curl \
+    apt-transport-https \
+    nano \
+    vim \
+    libconfig-simple-perl \
+    libclass-csv-perl \
+    libcgi-pm-perl \
+    libfile-which-perl \
+    cpanminus \
+    cups \
+    cups-bsd \
+    cups-client \
+    printer-driver-cups-pdf \
+    libfcgi-perl \
+    glabels \
+    libtext-csv-encoded-perl \
+    glabels-data \
+    mysql-client \
+    nmap \
+    iproute2 \
+    hplip \
+    locales
 
 RUN a2enmod rewrite
+RUN a2enmod cgi
+RUN a2enmod perl
 RUN a2enmod headers
-RUN phpenmod mcrypt
+# RUN phpenmod mcrypt
 
 # Composer install
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
+# supervisord
+RUN mkdir -p /var/log/supervisor
+
+COPY config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
 # Update the default apache site with the config we created.
-ADD config/apache/apache-virtual-hosts.conf /etc/apache2/sites-enabled/000-default.conf
-ADD config/apache/apache2.conf /etc/apache2/apache2.conf
-ADD config/apache/ports.conf /etc/apache2/ports.conf
-ADD config/apache/envvars /etc/apache2/envvars
+COPY config/apache/apache-virtual-hosts.conf /etc/apache2/sites-enabled/000-default.conf
+COPY config/apache/apache2.conf /etc/apache2/apache2.conf
+COPY config/apache/ports.conf /etc/apache2/ports.conf
+COPY config/apache/envvars /etc/apache2/envvars
+
+# locale
+RUN touch /usr/share/locale/locale.alias
+RUN sed -i -e 's/# \(en_AU\.UTF-8 .*\)/\1/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_AU.UTF-8
+ENV LANGUAGE en_AU:en
+ENV LC_ALL en_AU.UTF-8
 
 # Update php.ini
-ADD config/php/php.conf /etc/php/7.0/apache2/php.ini
+COPY config/php/php.conf /etc/php/7.0/apache2/php.ini
 
-# Init
-ADD init.sh /init.sh
-RUN chmod 755 /*.sh
-
-# Add phpinfo script for INFO purposes
+# COPY phpinfo script for INFO purposes
 RUN echo "<?php phpinfo();" >> /var/www/index.php
+
+RUN sed -ibak -e s+/usr/lib/cgi-bin+/var/www/cgi-bin+g /etc/apache2/conf-enabled/serve-cgi-bin.conf
 
 RUN service apache2 restart
 
 RUN chown -R www-data:www-data /var/www
+
+#RUN sed -i.bak '1i ServerAlias *' /etc/cups/cupsd.conf
+
+COPY config/cups/cupsd.conf /etc/cups/
+COPY config/cups/printers.conf /etc/cups/
+RUN sed -i.bak -e 's+Out.*+Out /var/www/PDF+g' /etc/cups/cups-pdf.conf
+
+#perl
+RUN cpanm Text::CSV::Unicode
+
+#RUN /usr/sbin/cupsd -f && cupsctl --remote-admin --remote-any --share-printers
 
 WORKDIR /var/www/
 
@@ -67,4 +108,4 @@ VOLUME /var/www
 # Ports: apache2
 EXPOSE 80
 
-CMD ["/init.sh"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

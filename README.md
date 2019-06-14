@@ -1,5 +1,5 @@
-# docker-ubuntu16-apache2-php7
-A docker image based on Ubuntu 16.04 with Apache2 + PHP 7.0
+# docker-ubuntu1804-apache2-php72
+A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.2 + Cups 2.2.x
 
 ## Pull the image
 
@@ -32,7 +32,8 @@ Create a Dockerfile with following content and then build the image.
 ```Dockerfile
 FROM francarmona/docker-ubuntu16-apache2-php7
 
-MAINTAINER Your Name <your@email>
+LABEL maintainer="Your Name <your@email>"
+LABEL description="A docker image based on Ubuntu 16.04 with Apache2 + PHP 7.0"
 
 # Apache site conf
 ADD config/apache/apache-virtual-hosts.conf /etc/apache2/sites-enabled/000-default.conf
