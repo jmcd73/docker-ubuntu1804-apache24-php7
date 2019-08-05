@@ -3,6 +3,13 @@ A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.2 + Cups 2.2.x.
 
 I use this image to develop a CakePHP 2.x application on my macbook use Docker Desktop for Mac
 
+The CakePHP application uses the following so the Docker Image contains support for the following
+* CUPS to receive print jobs
+* TCPDF for printing PDF's (gd required to embed images)
+* glabels-3-batch for printing labels and barcodes
+* MySQL or Maria DB
+
+
 Clone this repo and run docker build
 
 ```
@@ -23,31 +30,31 @@ Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view y
 
 ## Packages included
 
+ * apache2
+ * apt-transport-https
+ * composer
+ * cups
+ * curl
+ * libapache2-mod-php7.2
+ * mysql-client ( to test connectivity )
+ * nano
+ * php-mysql
  * php7.2
  * php7.2-cli
- * apache2
+ * php7.2-curl
  * php7.2-gd
  * php7.2-json
  * php7.2-mbstring
+ * php7.2-mcrypt
+ * php7.2-mysql
+ * php7.2-pear
+ * php7.2-soap
  * php7.2-xml
  * php7.2-xsl
  * php7.2-zip
- * php7.2-soap
- * php7.2-pear
- * php7.2-mcrypt
- * php7.2-curl
- * php-mysql
- * curl
- * libapacha2-mod-php
- * apt-transport-https
- * nano
- * vim (because nano bites)
- * php7.2-mysql
- * mysql-client ( to test connectivity )
- * lynx-cur
- * composer
  * supervisor
- * cups
+ * glabels
+ * vim (because nano bites)
 
 ## Exposed ports
 
@@ -61,7 +68,7 @@ Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view y
 ## Out of the box
 
  * Ubuntu 18.04 LTS
- * Apache2
+ * Apache2 with mod perl and php
  * PHP7.2
  * CUPS
  * Composer

@@ -7,6 +7,9 @@ LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.2+"
 # Environments vars
 ENV TERM=xterm
 
+# set a default root password
+RUN echo "root:HeartMindSoul" | chpasswd
+
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 

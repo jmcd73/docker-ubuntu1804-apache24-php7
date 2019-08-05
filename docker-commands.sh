@@ -12,9 +12,9 @@ else
 
 fi
 
-docker run  --name tgn-img \
--v ~/sites/tgn-img:/var/www  -d \
--p 632:631 -p 8081:80 toggen/tgn-img:20190614.2
+docker run  --name tgn \
+-v ~/sites/wms:/var/www  -d \
+-p 633:631 -p 8082:80 toggen/jmcd:20190614.3
 # toggen/tgn-img       20190614.2
 # publish cups to docker host on 632
 # publish apache to docker host on 8081
