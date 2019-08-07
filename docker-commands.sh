@@ -12,9 +12,15 @@ else
 
 fi
 
-docker run  --name tgn \
--v ~/sites/100pbc/wms:/var/www  -d \
--p 633:631 -p 8082:80 toggen/php7.3:latest
+CUPS_PORT=633
+APACHE_PORT=8082
+DOCKER_TAG=toggen/php73:latest
+VOLUME=~/sites/100pbc/wms
+CONTAINER_NAME=tgn
+
+docker run  --name $CONTAINER_NAME \
+-v ${VOLUME}:/var/www  -d \
+-p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 $DOCKER_TAG
 # toggen/tgn-img       20190614.2
 # publish cups to docker host on 632
 # publish apache to docker host on 8081

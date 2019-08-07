@@ -101,6 +101,8 @@ RUN chown -R www-data:www-data /var/www
 
 COPY config/cups/cupsd.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
+COPY config/cups/PDF.ppd /etc/cups/ppd/
+
 RUN sed -i.bak -e 's+Out.*+Out /var/www/PDF+g' /etc/cups/cups-pdf.conf
 
 #perl
