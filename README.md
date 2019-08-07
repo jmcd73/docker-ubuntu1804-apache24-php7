@@ -1,5 +1,5 @@
-# docker-ubuntu1804-apache2-php72
-A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.2 + Cups 2.2.x.
+# docker-ubuntu1804-apache2-php7
+A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.3 + Cups 2.2.x.
 
 I use this image to develop a CakePHP 2.x application on my macbook use Docker Desktop for Mac
 
@@ -35,23 +35,23 @@ Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view y
  * composer
  * cups
  * curl
- * libapache2-mod-php7.2
+ * libapache2-mod-php7.3
  * mysql-client ( to test connectivity )
  * nano
  * php-mysql
- * php7.2
- * php7.2-cli
- * php7.2-curl
- * php7.2-gd
- * php7.2-json
- * php7.2-mbstring
- * php7.2-mcrypt
- * php7.2-mysql
- * php7.2-pear
- * php7.2-soap
- * php7.2-xml
- * php7.2-xsl
- * php7.2-zip
+ * php7.3
+ * php7.3-cli
+ * php7.3-curl
+ * php7.3-gd
+ * php7.3-json
+ * php7.3-mbstring
+ * php7.3-mcrypt
+ * php7.3-mysql
+ * php7.3-pear
+ * php7.3-soap
+ * php7.3-xml
+ * php7.3-xsl
+ * php7.3-zip
  * supervisor
  * glabels
  * vim (because nano bites)
@@ -69,7 +69,7 @@ Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view y
 
  * Ubuntu 18.04 LTS
  * Apache2 with mod perl and php
- * PHP7.2
+ * PHP7.3
  * CUPS
  * Composer
  * Supervisord (to manage running cups and apache in the container)
