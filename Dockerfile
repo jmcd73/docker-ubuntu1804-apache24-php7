@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 LABEL maintainer="James McDonald <james@toggen.com.au>"
-LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.2+"
+LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.3+"
 
 # docker build -t toggen/tgn-img:20190614.2
 
@@ -12,25 +12,28 @@ RUN echo "root:HeartMindSoul" | chpasswd
 
 RUN apt-get update
 RUN apt-get -y dist-upgrade
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository ppa:ondrej/php
+RUN apt-get update
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     supervisor \
-    php \
-    php-cli \
-    php-gd \
-    php-json \
-    php-mbstring \
-    php-xml \
-    php-xsl \
-    php-zip \
-    php-soap \
+    php7.3 \
+    php7.3-cli \
+    php7.3-gd \
+    php7.3-json \
+    php7.3-mbstring \
+    php7.3-xml \
+    php7.3-xsl \
+    php7.3-zip \
+    php7.3-soap \
     php-pear \
-    php-mysql \
+    php7.3-mysql \
     libapache2-mod-php \
     libapache2-mod-perl2 \
     curl \
-    php-curl \
+    php7.3-curl \
     apt-transport-https \
     nano \
     vim \
