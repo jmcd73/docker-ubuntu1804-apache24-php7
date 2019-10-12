@@ -366,7 +366,7 @@
 
 *OpenUI *Label/Label outputfiles:PickOne
 *OrdeDependency: 100 AnySetup *Label
-*DefaultLabel: 2
+*DefaultLabel: 0
 *Label 0/Label only untitled documents with job-id: ""
 *Label 1/Prefix all documents with job-id: ""
 *Label 2/Suffix all documents with job-id: ""
@@ -374,7 +374,7 @@
 
 *OpenUI *TitlePref/Prefer title from:PickOne
 *OrdeDependency: 100 AnySetup *TitlePref
-*DefaultTitlePref: 0
+*DefaultTitlePref: 1
 *TitlePref 0/Title in postscript document: ""
 *TitlePref 1/Title passed via command-line1: ""
 *CloseUI: *TitlePref

@@ -70,6 +70,6 @@ Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view y
  * Ubuntu 18.04 LTS
  * Apache2 with mod perl and php
  * PHP7.3
- * CUPS
+ * CUPS with a cups-pdf print queue
  * Composer
- * Supervisord (to manage running cups and apache in the container)
+ * Supervisord (to manage running both Cups and Apache in the container)
