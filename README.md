@@ -1,10 +1,10 @@
 # docker-ubuntu1804-apache2-php7
 A docker image based on Ubuntu 18.04 LTS with Apache2 + PHP 7.3 + Cups 2.2.x.
 
-I use this image to develop a CakePHP 2.x application on my macbook use Docker Desktop for Mac
+I use this image to develop a CakePHP 2.x application on my Macbook using Docker Desktop for Mac
 
 The CakePHP application uses the following so the Docker Image contains support for the following
-* CUPS to receive print jobs
+* CUPS to receive and send print jobs
 * TCPDF for printing PDF's (gd required to embed images)
 * glabels-3-batch for printing labels and barcodes
 * MySQL or Maria DB
@@ -13,7 +13,10 @@ The CakePHP application uses the following so the Docker Image contains support 
 Clone this repo and run docker build
 
 ```
+docker build -t <repository>:<tag> .
 docker build -t toggen/tgn-img:20190614.2 .
+or
+docker build -t tgn/php73:v1 .
 ```
 
 ## Run

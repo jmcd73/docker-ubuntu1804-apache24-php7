@@ -14,8 +14,8 @@ fi
 
 CUPS_PORT=633
 APACHE_PORT=8082
-DOCKER_TAG=toggen/php73:latest
-VOLUME=~/sites/100pbc/wms
+DOCKER_TAG=tgn/cphp:v1
+VOLUME=~/sites/tgn-wms/
 CONTAINER_NAME=tgn
 
 docker run  --name $CONTAINER_NAME \
