@@ -10,11 +10,11 @@ ENV TERM=xterm
 # set a default root password
 RUN echo "root:HeartMindSoul" | chpasswd
 
+RUN apt-get clean all
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
-RUN apt-get update
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
@@ -56,6 +56,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     hplip \
     locales
 
+RUN apt-get clean all
 RUN a2enmod rewrite
 RUN a2enmod cgi
 RUN a2enmod perl
