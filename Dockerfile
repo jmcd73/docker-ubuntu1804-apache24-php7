@@ -54,7 +54,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     nmap \
     iproute2 \
     hplip \
-    locales
+    locales \
+    git \
+    unzip
 
 RUN a2enmod rewrite
 RUN a2enmod cgi
