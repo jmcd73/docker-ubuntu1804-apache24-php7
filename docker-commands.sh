@@ -14,13 +14,16 @@ fi
 
 CUPS_PORT=633
 APACHE_PORT=8082
-DOCKER_TAG=tgn/cphp:v1
+DOCKER_TAG=tgn/php73:v3
 VOLUME=~/sites/tgn-wms/
 CONTAINER_NAME=tgn
 
 docker run  --name $CONTAINER_NAME \
 -v ${VOLUME}:/var/www  -d \
--p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 $DOCKER_TAG
+-p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 \
+-e CUPS_PORT=${CUPS_PORT} \
+-e APACHE_PORT=${APACHE_PORT} $DOCKER_TAG
+
 # toggen/tgn-img       20190614.2
 # publish cups to docker host on 632
 # publish apache to docker host on 8081
