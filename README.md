@@ -15,22 +15,22 @@ Clone this repo and run docker build
 
 ```
 docker build -t <repository>:<tag> .
+
+# examples
 docker build -t toggen/tgn-img:20190614.2 .
-or
 docker build -t tgn/php73:v1 .
 ```
 
 ## Run
 
-After building the image, run the container.
+After building the image, run the container. You can use the `docker-commands.sh` script to do this also
 ```
-
 docker run  --name tgn-img \
 -v ~/sites/tgn-img:/var/www  -d \
--p [host-port I use 632]:631 -p [host-port I use 8080]:80 toggen/tgn-img:20190614.2
-
+-p [cups_port I use 632]:631 \
+-p [apache_port I use 8080]:80 toggen/tgn-img:20190614.2
 ```
-Browse to [http://localhost:[host-port]](http://localhost:[host-port]) to view your app.
+Browse to [http://localhost:[apache_port]](http://localhost:[apache_port]) to view your app.
 
 ## Packages included
 
