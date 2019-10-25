@@ -56,7 +56,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     hplip \
     locales \
     git \
-    unzip
+    unzip \
+    php-xdebug
 
 RUN apt-get clean all
 RUN a2enmod rewrite
