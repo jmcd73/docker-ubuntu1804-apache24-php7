@@ -12,9 +12,10 @@ RUN echo "root:HeartMindSoul" | chpasswd
 
 RUN apt-get clean all
 RUN apt-get update
-RUN apt-get -y dist-upgrade
+RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
+RUN apt-get update
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
@@ -30,17 +31,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     php7.3-soap \
     php-pear \
     php7.3-mysql \
-    libapache2-mod-php \
-    libapache2-mod-perl2 \
-    curl \
     php7.3-curl \
+    libapache2-mod-php \
+    curl \
     apt-transport-https \
-    nano \
     vim \
-    libconfig-simple-perl \
-    libclass-csv-perl \
-    libcgi-pm-perl \
-    libfile-which-perl \
     cpanminus \
     cups \
     cups-bsd \
@@ -48,7 +43,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     printer-driver-cups-pdf \
     libfcgi-perl \
     glabels \
-    libtext-csv-encoded-perl \
     glabels-data \
     mysql-client \
     nmap \
@@ -62,7 +56,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
 RUN apt-get clean all
 RUN a2enmod rewrite
 RUN a2enmod cgi
-RUN a2enmod perl
 RUN a2enmod headers
 # RUN phpenmod mcrypt
 
@@ -109,8 +102,6 @@ COPY config/cups/PDF.ppd /etc/cups/ppd/
 
 RUN sed -i.bak -e 's+Out.*+Out /var/www/PDF+g' /etc/cups/cups-pdf.conf
 
-#perl
-RUN cpanm Text::CSV::Unicode
 
 #RUN /usr/sbin/cupsd -f && cupsctl --remote-admin --remote-any --share-printers
 

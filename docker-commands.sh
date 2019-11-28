@@ -1,10 +1,10 @@
 # docker build -t toggen/tgn-img:ubuntu16-apache2-php7 .
 
-CUPS_PORT=${1:-633}
-APACHE_PORT=${2:-8083}
-DOCKER_TAG=${3:-tgn/php73:v3}
-VOLUME=${4:-~/sites/tgn-wms/}
-CONTAINER_NAME=${5:-tgn}
+CUPS_PORT=${1:-634}
+APACHE_PORT=${2:-8634}
+DOCKER_TAG=${3:-tgn-100pbc/php73:v1}
+VOLUME=${4:-~/sites/100pbc/}
+CONTAINER_NAME=${5:-tgn100pbc}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
@@ -16,7 +16,6 @@ case ${s} in
 		;;
 	*)
 		echo Skipping Container Delete
-		exit 1
 		;;
 esac
 
