@@ -1,10 +1,12 @@
-# docker build -t toggen/tgn-img:ubuntu16-apache2-php7 .
+# run the following build command
+# before running this file
+# docker build -t tgn/testwms .
 
-CUPS_PORT=${1:-634}
-APACHE_PORT=${2:-8634}
-DOCKER_TAG=${3:-tgn-100pbc/php73:v1}
-VOLUME=${4:-~/sites/100pbc/}
-CONTAINER_NAME=${5:-tgn100pbc}
+CUPS_PORT=${1:-646}
+APACHE_PORT=${2:-8046}
+DOCKER_TAG=${3:-tgn/testwms}
+VOLUME=${4:-~/sites/testwms/}
+CONTAINER_NAME=${5:-testwms}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
