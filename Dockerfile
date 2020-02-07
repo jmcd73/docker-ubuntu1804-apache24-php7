@@ -15,24 +15,22 @@ RUN apt-get update
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
+RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
 RUN apt-get update
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     supervisor \
-    php7.3 \
-    php7.3-cli \
-    php7.3-gd \
-    php7.3-json \
-    php7.3-mbstring \
-    php7.3-xml \
-    php7.3-xsl \
-    php7.3-zip \
-    php7.3-soap \
-    php-pear \
-    php7.3-mysql \
-    php7.3-curl \
-    libapache2-mod-php \
+    php7.4 \
+    php7.4-cli \
+    php7.4-gd \
+    php7.4-json \
+    php7.4-mbstring \
+    php7.4-opcache \
+    php7.4-xml \
+    php7.4-mysql \
+    php7.4-curl \
+    libapache2-mod-php7.4 \
     curl \
     apt-transport-https \
     vim \
@@ -42,8 +40,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     cups-client \
     printer-driver-cups-pdf \
     libfcgi-perl \
-    glabels \
-    glabels-data \
     mysql-client \
     nmap \
     iproute2 \
@@ -51,12 +47,26 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     locales \
     git \
     unzip \
-    php-xdebug
+    php-xdebug \
+    xz-utils \
+    cmake
+
+RUN apt-get -y build-dep glabels
 
 RUN apt-get clean all
 RUN a2enmod rewrite
 RUN a2enmod cgi
 RUN a2enmod headers
+RUN mkdir /build && cd /build && \
+    wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && tar -xvf zint-2.6.3_final.tar.gz && \
+    cd zint-2.6.3.src/ && mkdir build && cd build && cmake .. && make && make install
+
+
+RUN cd /build && wget http://ftp.gnome.org/pub/GNOME/sources/glabels/3.4/glabels-3.4.1.tar.xz && tar xvf glabels-3.4.1.tar.xz && \
+    cd glabels-3.4.1/ && ./configure && make && make install && ldconfig
+
+RUN rm -rf /build
+
 # RUN phpenmod mcrypt
 
 # Composer install
