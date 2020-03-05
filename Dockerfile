@@ -57,13 +57,31 @@ RUN apt-get clean all
 RUN a2enmod rewrite
 RUN a2enmod cgi
 RUN a2enmod headers
+
+# glabels needs to be compiled from source
+# because the default install doesn't have zint
+# needed for GS1-128 barcodes
+
 RUN mkdir /build && cd /build && \
-    wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && tar -xvf zint-2.6.3_final.tar.gz && \
-    cd zint-2.6.3.src/ && mkdir build && cd build && cmake .. && make && make install
+    wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && \
+    tar -xvf zint-2.6.3_final.tar.gz && \
+    cd zint-2.6.3.src/ && \
+    mkdir build && cd build && \
+    cmake .. && make && make install
 
+RUN cd /build && \
+    wget https://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz && \
+    tar xzf barcode-0.98.tar.gz && \
+    cd barcode-0.98/ && \
+    ./configure && make && \
+    make install
 
-RUN cd /build && wget http://ftp.gnome.org/pub/GNOME/sources/glabels/3.4/glabels-3.4.1.tar.xz && tar xvf glabels-3.4.1.tar.xz && \
-    cd glabels-3.4.1/ && ./configure && make && make install && ldconfig
+RUN cd /build && \
+    wget http://ftp.gnome.org/pub/GNOME/sources/glabels/3.4/glabels-3.4.1.tar.xz && \
+    tar xvf glabels-3.4.1.tar.xz && \
+    cd glabels-3.4.1/ && \
+    ./configure && \
+    make && make install && ldconfig
 
 RUN rm -rf /build
 
@@ -119,9 +137,5 @@ WORKDIR /var/www/
 
 # Volume
 VOLUME /var/www
-
-# Ports: apache2
-EXPOSE 80
-EXPOSE 631
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

@@ -4,9 +4,9 @@
 
 CUPS_PORT=${1:-648}
 APACHE_PORT=${2:-8048}
-DOCKER_TAG=${3:-tgn/tgn-wms\:v6}
+DOCKER_TAG=${3:-tgn/tgn-wms\:v7}
 VOLUME=${4:-~/sites/tgn-wms/}
-CONTAINER_NAME=${5:-tgn-wmsv6}
+CONTAINER_NAME=${5:-tgn-wmsv7}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
@@ -34,7 +34,8 @@ case ${s} in
 y | Y)
     docker run --name $CONTAINER_NAME \
         -v ${VOLUME}:/var/www -d \
-        -p ${CUPS_PORT}:631 -p ${APACHE_PORT}:80 \
+        -p ${APACHE_PORT}:80 \
+	-p ${CUPS_PORT}:631 \
         -e CUPS_PORT=${CUPS_PORT} \
         -e APACHE_PORT=${APACHE_PORT} $DOCKER_TAG
     ;;
