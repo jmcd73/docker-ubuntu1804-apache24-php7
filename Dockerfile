@@ -30,6 +30,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     php7.4-xml \
     php7.4-mysql \
     php7.4-curl \
+    php7.4-intl \
+    php7.4-sqlite3 \
     libapache2-mod-php7.4 \
     curl \
     apt-transport-https \

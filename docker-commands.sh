@@ -2,11 +2,11 @@
 # before running this file
 # docker build -t tgn/tgn-wms .
 
-CUPS_PORT=${1:-648}
-APACHE_PORT=${2:-8048}
+CUPS_PORT=${1:-649}
+APACHE_PORT=${2:-8049}
 DOCKER_TAG=${3:-tgn/tgn-wms\:v7}
-VOLUME=${4:-~/sites/tgn-wms/}
-CONTAINER_NAME=${5:-tgn-wmsv7}
+VOLUME=${4:-~/sites/tgn-wms-cakephp4/}
+CONTAINER_NAME=${5:-tgn-wms-cakephp4}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
