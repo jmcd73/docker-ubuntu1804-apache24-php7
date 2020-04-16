@@ -1,8 +1,8 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
 LABEL maintainer="James McDonald <james@toggen.com.au>"
-LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.3+"
+LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.4+"
 
-# docker build -t toggen/tgn-img:20190614.2
+# docker build -t toggen/tgn-img:20190614.2 .
 
 # Environments vars
 ENV TERM=xterm
@@ -15,6 +15,7 @@ RUN apt-get update
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
+RUN add-apt-repository ppa:ondrej/apache2
 RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
 RUN apt-get update
 
@@ -51,9 +52,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     unzip \
     php-xdebug \
     xz-utils \
-    cmake
-
-RUN apt-get -y build-dep glabels
+    cmake \
+    libgl1 \
+    libqt5x11extras5
 
 RUN apt-get clean all
 RUN a2enmod rewrite
@@ -64,28 +65,18 @@ RUN a2enmod headers
 # because the default install doesn't have zint
 # needed for GS1-128 barcodes
 
-RUN mkdir /build && cd /build && \
-    wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && \
-    tar -xvf zint-2.6.3_final.tar.gz && \
-    cd zint-2.6.3.src/ && \
-    mkdir build && cd build && \
-    cmake .. && make && make install
+RUN wget https://github.com/jimevins/glabels-qt/releases/download/glabels-3.99-master561/glabels-3.99-master561-x86_64.AppImage && \
+    chmod +x glabels-3.99-master561-x86_64.AppImage && \
+    ./glabels-3.99-master561-x86_64.AppImage --appimage-extract && \
+    mv squashfs-root /usr/local/glabels-qt && \
+    rm -f glabels-3.99-master561-x86_64.AppImage
 
-RUN cd /build && \
-    wget https://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz && \
-    tar xzf barcode-0.98.tar.gz && \
-    cd barcode-0.98/ && \
-    ./configure && make && \
-    make install
+RUN find /usr/local/glabels-qt -type d -exec chmod 0775 {} \;
+RUN find /usr/local/glabels-qt -type f -exec chmod 0775 {} \;
+#  echo /usr/local/glabels-qt/usr/lib > /etc/ld.so.conf.d/glabels-qt.conf && \
+# RUN ldconfig -v
 
-RUN cd /build && \
-    wget http://ftp.gnome.org/pub/GNOME/sources/glabels/3.4/glabels-3.4.1.tar.xz && \
-    tar xvf glabels-3.4.1.tar.xz && \
-    cd glabels-3.4.1/ && \
-    ./configure && \
-    make && make install && ldconfig
 
-RUN rm -rf /build
 
 # RUN phpenmod mcrypt
 
@@ -108,15 +99,14 @@ COPY config/apache/envvars /etc/apache2/envvars
 RUN touch /usr/share/locale/locale.alias
 RUN sed -i -e 's/# \(en_AU\.UTF-8 .*\)/\1/' /etc/locale.gen && \
     locale-gen
-ENV LANG en_AU.UTF-8
-ENV LANGUAGE en_AU:en
-ENV LC_ALL en_AU.UTF-8
+ENV LANG "en_AU.UTF-8"
+ENV LANGUAGE "en_AU:en"
+ENV LC_ALL "en_AU.UTF-8"
+ENV PATH "/usr/local/glabels-qt/usr/bin:$PATH"
+ENV LD_LIBRARY_PATH "/usr/local/glabels-qt/usr/lib:$LD_LIBRARY_PATH"
 
 # Update php.ini
-COPY config/php/php.conf /etc/php/7.0/apache2/php.ini
-
-# COPY phpinfo script for INFO purposes
-RUN echo "<?php phpinfo();" >> /var/www/index.php
+COPY config/php/php.conf /etc/php/7.4/apache2/php.ini
 
 RUN sed -ibak -e s+/usr/lib/cgi-bin+/var/www/cgi-bin+g /etc/apache2/conf-enabled/serve-cgi-bin.conf
 
