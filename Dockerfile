@@ -54,7 +54,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     xz-utils \
     cmake \
     libgl1 \
-    libqt5x11extras5
+    libqt5x11extras5 \
+    npm \
+    nodejs
 
 RUN apt-get clean all
 RUN a2enmod rewrite
