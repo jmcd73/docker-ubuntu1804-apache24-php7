@@ -17,6 +17,7 @@ RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:ondrej/php
 RUN add-apt-repository ppa:ondrej/apache2
 RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+RUN apt-get clean all
 RUN apt-get update
 
 # Packages installation
@@ -56,7 +57,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     libgl1 \
     libqt5x11extras5 \
     npm \
-    nodejs
+    nodejs \
+    xvfb
+# installs xvfb-run for allowing glabels-batch-qt to run
 
 RUN apt-get clean all
 RUN a2enmod rewrite
