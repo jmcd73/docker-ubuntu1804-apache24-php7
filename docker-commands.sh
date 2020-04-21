@@ -4,9 +4,9 @@
 
 CUPS_PORT=${1:-650}
 APACHE_PORT=${2:-8050}
-DOCKER_TAG=${3:-tgn/tgn-wms\:v11}
+DOCKER_TAG=${3:-tgn/tgn-wms\:v14}
 VOLUME=${4:-~/sites/tgn-wms-cakephp4/}
-CONTAINER_NAME=${5:-tgn-wms-v11}
+CONTAINER_NAME=${5:-tgn-wms-v14}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
@@ -33,8 +33,9 @@ read s
 case ${s} in
 y | Y)
     docker run --name $CONTAINER_NAME \
-        -v ${VOLUME}:/var/www -d \
+        -v ${VOLUME}:/var/www:delegated -d \
         -p ${APACHE_PORT}:80 \
+	-v ~/.composer/docker-cache/:/root/.composer:cached \
         -p ${CUPS_PORT}:631 \
         -e CUPS_PORT=${CUPS_PORT} \
         -e APACHE_PORT=${APACHE_PORT} $DOCKER_TAG
