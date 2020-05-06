@@ -1,6 +1,6 @@
-FROM ubuntu:latest
+FROM ubuntu:20.04
 LABEL maintainer="James McDonald <james@toggen.com.au>"
-LABEL description="Ubuntu 18.04+, Apache 2.4+, PHP 7.4+"
+LABEL description="Ubuntu 20.04+, Apache 2.4+, PHP 7.4+"
 
 # docker build -t toggen/tgn-img:20190614.2 .
 
@@ -14,8 +14,6 @@ RUN apt-get clean all
 RUN apt-get update
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get -y install software-properties-common
-RUN add-apt-repository ppa:ondrej/php
-RUN add-apt-repository ppa:ondrej/apache2
 RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
 RUN apt-get clean all
 RUN apt-get update
@@ -23,27 +21,25 @@ RUN apt-get update
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     supervisor \
-    php7.4 \
-    php7.4-cli \
-    php7.4-gd \
-    php7.4-json \
-    php7.4-mbstring \
-    php7.4-opcache \
-    php7.4-xml \
-    php7.4-mysql \
-    php7.4-curl \
-    php7.4-intl \
-    php7.4-sqlite3 \
-    libapache2-mod-php7.4 \
+    php \
+    php-cli \
+    php-gd \
+    php-json \
+    php-mbstring \
+    php-opcache \
+    php-xml \
+    php-mysql \
+    php-curl \
+    php-intl \
+    php-sqlite3 \
+    libapache2-mod-php \
     curl \
     apt-transport-https \
     vim \
-    cpanminus \
     cups \
     cups-bsd \
     cups-client \
     printer-driver-cups-pdf \
-    libfcgi-perl \
     mysql-client \
     nmap \
     iproute2 \
@@ -53,7 +49,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     unzip \
     php-xdebug \
     xz-utils \
-    cmake \
     libgl1 \
     libqt5x11extras5 \
     npm \
@@ -63,7 +58,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
 
 RUN apt-get clean all
 RUN a2enmod rewrite
-RUN a2enmod cgi
 RUN a2enmod headers
 
 # glabels needs to be compiled from source
@@ -78,10 +72,6 @@ RUN wget https://github.com/jimevins/glabels-qt/releases/download/glabels-3.99-m
 
 RUN find /usr/local/glabels-qt -type d -exec chmod 0775 {} \;
 RUN find /usr/local/glabels-qt -type f -exec chmod 0775 {} \;
-#  echo /usr/local/glabels-qt/usr/lib > /etc/ld.so.conf.d/glabels-qt.conf && \
-# RUN ldconfig -v
-
-
 
 # RUN phpenmod mcrypt
 
@@ -107,8 +97,8 @@ RUN sed -i -e 's/# \(en_AU\.UTF-8 .*\)/\1/' /etc/locale.gen && \
 ENV LANG "en_AU.UTF-8"
 ENV LANGUAGE "en_AU:en"
 ENV LC_ALL "en_AU.UTF-8"
-ENV PATH "/usr/local/glabels-qt/usr/bin:$PATH"
-ENV LD_LIBRARY_PATH "/usr/local/glabels-qt/usr/lib:$LD_LIBRARY_PATH"
+# ENV PATH "$PATH:/usr/local/glabels-qt/usr/bin"
+# ENV LD_LIBRARY_PATH "/usr/local/glabels-qt/usr/lib:$LD_LIBRARY_PATH"
 
 # Update php.ini
 COPY config/php/php.conf /etc/php/7.4/apache2/php.ini
