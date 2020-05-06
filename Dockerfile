@@ -82,7 +82,7 @@ RUN mv composer.phar /usr/local/bin/composer
 # supervisord
 RUN mkdir -p /var/log/supervisor
 
-COPY config/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY config/supervisor/apache_cups.conf /etc/supervisor/conf.d/
 
 # Update the default apache site with the config we created.
 COPY config/apache/apache-virtual-hosts.conf /etc/apache2/sites-enabled/000-default.conf
@@ -97,8 +97,6 @@ RUN sed -i -e 's/# \(en_AU\.UTF-8 .*\)/\1/' /etc/locale.gen && \
 ENV LANG "en_AU.UTF-8"
 ENV LANGUAGE "en_AU:en"
 ENV LC_ALL "en_AU.UTF-8"
-# ENV PATH "$PATH:/usr/local/glabels-qt/usr/bin"
-# ENV LD_LIBRARY_PATH "/usr/local/glabels-qt/usr/lib:$LD_LIBRARY_PATH"
 
 # Update php.ini
 COPY config/php/php.conf /etc/php/7.4/apache2/php.ini
@@ -109,16 +107,16 @@ RUN service apache2 restart
 
 RUN chown -R www-data:www-data /var/www
 
-#RUN sed -i.bak '1i ServerAlias *' /etc/cups/cupsd.conf
-
 COPY config/cups/cupsd.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
 COPY config/cups/PDF.ppd /etc/cups/ppd/
 
 RUN sed -i.bak -e 's+Out.*+Out /var/www/PDF+g' /etc/cups/cups-pdf.conf
 
-
-#RUN /usr/sbin/cupsd -f && cupsctl --remote-admin --remote-any --share-printers
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+RUN apt-get install -y --no-install-recommends fontconfig ttf-mscorefonts-installer
+ADD config/fonts/localfonts.conf /etc/fonts/local.conf
+RUN fc-cache -f -v
 
 WORKDIR /var/www/
 
