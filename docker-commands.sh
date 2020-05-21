@@ -4,9 +4,9 @@
 
 CUPS_PORT=${1:-650}
 APACHE_PORT=${2:-8050}
-DOCKER_TAG=${3:-tgn/tgn-wms\:v14}
+DOCKER_TAG=${3:-tgn/tgn-wms:v16}
 VOLUME=${4:-~/sites/tgn-wms-cakephp4/}
-CONTAINER_NAME=${5:-tgn-wms-v14}
+CONTAINER_NAME=${5:-tgnwms}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
