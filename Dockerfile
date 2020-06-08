@@ -108,6 +108,7 @@ RUN service apache2 restart
 RUN chown -R www-data:www-data /var/www
 
 COPY config/cups/cupsd.conf /etc/cups/
+COPY config/cups/cups-pdf.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
 COPY config/cups/PDF.ppd /etc/cups/ppd/
 

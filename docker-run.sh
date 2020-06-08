@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # run the following build command
 # before running this file
 # docker build -t tgn/tgn-wms:v14 .
@@ -32,7 +34,7 @@ read s
 
 case ${s} in
 y | Y)
-    docker run --name $CONTAINER_NAME \
+    docker run  --name $CONTAINER_NAME \
         -v ${VOLUME}:/var/www:delegated -d \
         -p ${APACHE_PORT}:80 \
         -v ~/.composer/docker-cache/:/root/.composer:cached \
