@@ -6,7 +6,7 @@
 
 CUPS_PORT=${1:-650}
 APACHE_PORT=${2:-8050}
-DOCKER_TAG=${3:-tgn/tgn-wms:v16}
+DOCKER_TAG=${3:-tgn/tgn-wms:v17}
 VOLUME=${4:-~/sites/tgn-wms-cakephp4/}
 CONTAINER_NAME=${5:-tgnwms}
 
@@ -35,7 +35,7 @@ read s
 case ${s} in
 y | Y)
     docker run  --name $CONTAINER_NAME \
-        -v ${VOLUME}:/var/www:delegated -d \
+        -v ${VOLUME}:/var/www:Z -d \
         -p ${APACHE_PORT}:80 \
         -v ~/.composer/docker-cache/:/root/.composer:cached \
         -p ${CUPS_PORT}:631 \
