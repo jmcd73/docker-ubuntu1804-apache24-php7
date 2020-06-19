@@ -112,8 +112,9 @@ COPY config/cups/cups-pdf.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
 COPY config/cups/PDF.ppd /etc/cups/ppd/
 
-RUN sed -i.bak -e 's+Out.*+Out /var/www/PDF+g' /etc/cups/cups-pdf.conf
+RUN sed -i.bak -e "s+Out.*+Out /var/www/PDF+g" /etc/cups/cups-pdf.conf
 
+# install fonts for PDF out put
 RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
 RUN apt-get install -y --no-install-recommends fontconfig ttf-mscorefonts-installer
 ADD config/fonts/localfonts.conf /etc/fonts/local.conf

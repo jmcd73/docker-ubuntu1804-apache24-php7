@@ -4,11 +4,12 @@
 # before running this file
 # docker build -t tgn/tgn-wms:v14 .
 
-CUPS_PORT=${1:-651}
-APACHE_PORT=${2:-8090}
-DOCKER_TAG=${3:-tgn/tgn-wms:v18}
-VOLUME=${4:-~/sites/afewms/}
-CONTAINER_NAME=${5:-afewms}
+WEB_DIR=prod
+CUPS_PORT=655
+APACHE_PORT=8099
+DOCKER_TAG=tgn/tgn-wms:v19
+VOLUME=/home/user/${WEB_DIR}/
+CONTAINER_NAME=${WEB_DIR}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
@@ -32,13 +33,15 @@ from the DOCKER_TAG: ${DOCKER_TAG} image?
 Do you want to continue? [N/y]"
 read s
 
+#         -v ~/.composer/docker-cache/:/root/.composer:cached \
+
 case ${s} in
 y | Y)
     docker run  --name $CONTAINER_NAME \
-        -v ${VOLUME}:/var/www:Z -d \
+        -v ${VOLUME}:/var/www/${WEB_DIR}:Z -d \
         -p ${APACHE_PORT}:80 \
-        -v ~/.composer/docker-cache/:/root/.composer:cached \
         -p ${CUPS_PORT}:631 \
+        -e WEB_DIR=${WEB_DIR} \
         -e CUPS_PORT=${CUPS_PORT} \
         -e APACHE_PORT=${APACHE_PORT} $DOCKER_TAG
     ;;
