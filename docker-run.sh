@@ -8,7 +8,7 @@ WEB_DIR=test
 CUPS_PORT=8631
 APACHE_PORT=8091
 DOCKER_TAG=tgn/tgn-wms:v20
-VOLUME=/var/www/afewms/${WEB_DIR}/
+VOLUME=/home/jm/sites/afewms/
 CONTAINER_NAME=${WEB_DIR}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
