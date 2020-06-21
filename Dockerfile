@@ -103,7 +103,7 @@ COPY config/php/php.conf /etc/php/7.4/apache2/php.ini
 
 RUN sed -ibak -e s+/usr/lib/cgi-bin+/var/www/cgi-bin+g /etc/apache2/conf-enabled/serve-cgi-bin.conf
 
-RUN service apache2 restart
+# RUN service apache2 restart
 
 RUN chown -R www-data:www-data /var/www
 
