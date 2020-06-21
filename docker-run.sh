@@ -4,11 +4,11 @@
 # before running this file
 # docker build -t tgn/tgn-wms:v14 .
 
-WEB_DIR=prod
-CUPS_PORT=655
-APACHE_PORT=8099
-DOCKER_TAG=tgn/tgn-wms:v19
-VOLUME=/home/user/${WEB_DIR}/
+WEB_DIR=test
+CUPS_PORT=8631
+APACHE_PORT=8091
+DOCKER_TAG=tgn/tgn-wms:v20
+VOLUME=/var/www/afewms/${WEB_DIR}/
 CONTAINER_NAME=${WEB_DIR}
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
