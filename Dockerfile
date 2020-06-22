@@ -111,6 +111,8 @@ COPY config/cups/cupsd.conf /etc/cups/
 COPY config/cups/cups-pdf.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
 COPY config/cups/PDF.ppd /etc/cups/ppd/
+COPY config/docker-entrypoint.sh /usr/local/bin/
+
 
 RUN sed -i.bak -e "s+Out.*+Out /var/www/PDF+g" /etc/cups/cups-pdf.conf
 
@@ -124,5 +126,7 @@ WORKDIR /var/www/
 
 # Volume
 VOLUME /var/www
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

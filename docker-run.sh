@@ -4,9 +4,9 @@
 # before running this file
 # docker build -t tgn/tgn-wms:v14 .
 
-WEB_DIR=test
-CUPS_PORT=8631
-APACHE_PORT=8091
+WEB_DIR=test2
+CUPS_PORT=8632
+APACHE_PORT=8092
 DOCKER_TAG=tgn/tgn-wms:v20
 VOLUME=/home/jm/sites/afewms/
 CONTAINER_NAME=${WEB_DIR}
