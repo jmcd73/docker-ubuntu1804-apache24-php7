@@ -4,12 +4,22 @@
 # before running this file
 # docker build -t tgn/tgn-wms:v14 .
 
-WEB_DIR=test2
-CUPS_PORT=8632
-APACHE_PORT=8092
-DOCKER_TAG=tgn/tgn-wms:v20
-VOLUME=/home/jm/sites/afewms/
-CONTAINER_NAME=${WEB_DIR}
+if [ -f ./.docker-env ];
+then
+	source ./.docker-env
+fi
+
+if [ -z "$WEB_DIR" ]; 
+	then
+		echo Plese create a .docker-env file and specify
+		echo WEB_DIR=app
+		echo CUPS_PORT=8666
+		echo APACHE_PORT=8999
+		echo DOCKER_TAG=tgn/tgn-wms:v22
+		echo VOLUME=/var/www/afewms/\${WEB_DIR}
+		echo CONTAINER_NAME=\${WEB_DIR}
+	 exit
+fi
 
 /bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
 read s
