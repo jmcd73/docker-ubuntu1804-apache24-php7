@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 LABEL maintainer="James McDonald <james@toggen.com.au>"
-LABEL description="Ubuntu 20.04+, Apache 2.4+, PHP 7.4+"
+LABEL description="Ubuntu 20.04+, Apache 2.4+, PHP 7.4+, Glabels 3.4.1"
 
 # docker build -t toggen/tgn-img:20190614.2 .
 
@@ -10,13 +10,10 @@ ENV TERM=xterm
 # set a default root password
 RUN echo "root:HeartMindSoul" | chpasswd
 
-RUN apt-get clean all
-RUN apt-get update
+
+RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get -y install software-properties-common
-RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
-RUN apt-get clean all
-RUN apt-get update
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
@@ -53,9 +50,19 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     libqt5x11extras5 \
     npm \
     nodejs \
-    xvfb
-# installs xvfb-run for allowing glabels-batch-qt to run
+    xvfb \
+    cmake
 
+# installs xvfb-run for allowing glabels-batch-qt to run
+RUN apt-get -y build-dep glabels
+
+# install fonts for PDF out put
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+RUN apt-get install -y --no-install-recommends fontconfig ttf-mscorefonts-installer
+ADD config/fonts/localfonts.conf /etc/fonts/local.conf
+RUN fc-cache -f -v
+
+# remove cruft
 RUN apt-get clean all
 RUN a2enmod rewrite
 RUN a2enmod headers
@@ -64,16 +71,14 @@ RUN a2enmod headers
 # because the default install doesn't have zint
 # needed for GS1-128 barcodes
 
-RUN wget https://github.com/jimevins/glabels-qt/releases/download/glabels-3.99-master561/glabels-3.99-master561-x86_64.AppImage && \
-    chmod +x glabels-3.99-master561-x86_64.AppImage && \
-    ./glabels-3.99-master561-x86_64.AppImage --appimage-extract && \
-    mv squashfs-root /usr/local/glabels-qt && \
-    rm -f glabels-3.99-master561-x86_64.AppImage
+# RUN wget https://github.com/jimevins/glabels-qt/releases/download/glabels-3.99-master561/glabels-3.99-master561-x86_64.AppImage && \
+#    chmod +x glabels-3.99-master561-x86_64.AppImage && \
+#    ./glabels-3.99-master561-x86_64.AppImage --appimage-extract && \
+#    mv squashfs-root /usr/local/glabels-qt && \
+#    rm -f glabels-3.99-master561-x86_64.AppImage
 
-RUN find /usr/local/glabels-qt -type d -exec chmod 0775 {} \;
-RUN find /usr/local/glabels-qt -type f -exec chmod 0775 {} \;
-
-# RUN phpenmod mcrypt
+# RUN find /usr/local/glabels-qt -type d -exec chmod 0775 {} \;
+# RUN find /usr/local/glabels-qt -type f -exec chmod 0775 {} \;
 
 # Composer install
 RUN curl -sS https://getcomposer.org/installer | php
@@ -116,11 +121,27 @@ COPY config/docker-entrypoint.sh /usr/local/bin/
 
 RUN sed -i.bak -e "s+Out.*+Out /var/www/PDF+g" /etc/cups/cups-pdf.conf
 
-# install fonts for PDF out put
-RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
-RUN apt-get install -y --no-install-recommends fontconfig ttf-mscorefonts-installer
-ADD config/fonts/localfonts.conf /etc/fonts/local.conf
-RUN fc-cache -f -v
+
+RUN mkdir /build && cd /build && \
+wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && \
+tar -xvf zint-2.6.3_final.tar.gz && \
+cd zint-2.6.3.src/ && \
+mkdir build && cd build && \
+cmake .. && make && make install
+
+RUN cd /build && \
+wget https://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz && \
+tar xzf barcode-0.98.tar.gz && \
+cd barcode-0.98/ && \
+./configure && make && \
+make install
+
+RUN cd /build && \
+wget http://ftp.gnome.org/pub/GNOME/sources/glabels/3.4/glabels-3.4.1.tar.xz && \
+tar xvf glabels-3.4.1.tar.xz && \
+cd glabels-3.4.1/ && \
+./configure && \
+make && make install && ldconfig
 
 WORKDIR /var/www/
 
