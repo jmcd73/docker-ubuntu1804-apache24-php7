@@ -4,7 +4,8 @@
 # before running this file
 # docker build -t tgn/tgn-wms:v14 .
 
-PASSWORD=$(zenity --password --title="Docker Root Password" 2>/dev/null)
+read -s -p "Enter root password: " PASSWORD
+/bin/echo
 
 if [ -f ./.docker-env ]; then
     source ./.docker-env
@@ -21,8 +22,8 @@ if [ -z "$WEB_DIR" ]; then
     exit
 fi
 
-/bin/echo -n "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]"
-read s
+/bin/echo
+read -p "Removing ${CONTAINER_NAME} container! Do you want to continue? [N/y]" s
 
 case ${s} in
 Y | y)
