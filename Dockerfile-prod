@@ -8,12 +8,13 @@ LABEL description="Ubuntu 20.04+, Apache 2.4+, PHP 7.4+, Glabels 3.4.1"
 ENV TERM=xterm
 
 # set a default root password
+# changed is prompted when launching container
+# using docker-run.sh
 RUN echo "root:HeartMindSoul" | chpasswd
 
-
+# need sources to install build deps
 RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
-RUN apt-get update && apt-get -y dist-upgrade
-RUN apt-get -y install software-properties-common
+RUN apt-get update && apt-get -y dist-upgrade && apt-get -y install software-properties-common && apt-get update
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
@@ -30,7 +31,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     php-intl \
     php-sqlite3 \
     libapache2-mod-php \
-    curl \
+    # needed for composer install
+    curl \ 
     apt-transport-https \
     vim \
     cups \
@@ -38,19 +40,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     cups-client \
     printer-driver-cups-pdf \
     mysql-client \
-    nmap \
-    iproute2 \
     hplip \
     locales \
     git \
     unzip \
-    php-xdebug \
     xz-utils \
     libgl1 \
-    libqt5x11extras5 \
-    npm \
-    nodejs \
-    xvfb \
     cmake \
     php-mailparse
 
@@ -68,9 +63,10 @@ RUN apt-get clean all
 RUN a2enmod rewrite
 RUN a2enmod headers
 
-# glabels needs to be compiled from source
-# because the default install doesn't have zint
-# needed for GS1-128 barcodes
+# Glabels 4 is a big leap forward but not ready for prime time
+# I notice font kerning issues with smaller font sizes 
+# despite it all working very well. Will wait for it to be released
+# stably before using in prod
 
 # RUN wget https://github.com/jimevins/glabels-qt/releases/download/glabels-3.99-master561/glabels-3.99-master561-x86_64.AppImage && \
 #    chmod +x glabels-3.99-master561-x86_64.AppImage && \
@@ -118,10 +114,11 @@ COPY config/cups/cups-pdf.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
 COPY config/cups/PDF.ppd /etc/cups/ppd/
 COPY config/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-
+# this is eventually changed from /var/www/PDF to 
+# /var/www/${WEB_DIR}/PDF by docker-entrypoint.sh
 RUN sed -i.bak -e "s+Out.*+Out /var/www/PDF+g" /etc/cups/cups-pdf.conf
-
 
 RUN mkdir /build && cd /build && \
 wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && \
@@ -144,6 +141,8 @@ cd glabels-3.4.1/ && \
 ./configure && \
 make && make install && ldconfig
 
+RUN rm -rf /build
+
 WORKDIR /var/www/
 
 # Volume
@@ -151,4 +150,5 @@ VOLUME /var/www
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
+# this starts and manages apache and cups
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
