@@ -13,8 +13,10 @@ ENV TERM=xterm
 RUN echo "root:HeartMindSoul" | chpasswd
 
 RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
-RUN apt-get update && apt-get -y dist-upgrade
-RUN apt-get -y install software-properties-common
+RUN apt-get update && apt-get -y dist-upgrade && apt-get -y install software-properties-common
+
+# have to run update twice because of 
+# error connecting to security.ubuntu.com
 
 # Packages installation
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \

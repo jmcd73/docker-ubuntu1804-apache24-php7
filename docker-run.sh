@@ -48,8 +48,14 @@ read s
 
 case ${s} in
 y | Y)
+
+    # mount the current users composer cache
+    # this stops the problem of github asking for new tokens 
+    # every time you do composer install in the container
+    
     docker run --name $CONTAINER_NAME \
         -v ${VOLUME}:/var/www/${WEB_DIR}:Z -d \
+        -v ~/.composer/docker-cache/:/root/.composer:cached \
         -p ${APACHE_PORT}:80 \
         -p ${CUPS_PORT}:631 \
         -e WEB_DIR=${WEB_DIR} \
