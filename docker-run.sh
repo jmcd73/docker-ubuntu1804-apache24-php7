@@ -65,7 +65,8 @@ y | Y)
     if [ -n "${PASSWORD}" ]; then
         echo Changing root password
         echo "root:${PASSWORD}" | docker exec -i ${CONTAINER_NAME} chpasswd
-        docker exec -i ${CONTAINER_NAME} lpadmin -p EMAIL_ONLY -E -v file:/dev/null
+        # doesn't work because cups is not up when this is run
+        # docker exec -i ${CONTAINER_NAME} lpadmin -p EMAIL_ONLY -E -v file:/dev/null
         
         # null printer
         # lpadmin -p BLACK_HOLE -E -v file:///dev/null
