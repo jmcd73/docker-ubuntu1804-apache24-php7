@@ -7,11 +7,17 @@
 read -s -p "Enter root password: " PASSWORD
 /bin/echo
 
-if [ -f ./.docker-env ]; then
-    source ./.docker-env
+DOCKER_ENV=./.docker-env
+
+if [ -n "$1" ]; 
+then
+    DOCKER_ENV="$1"
 fi
 
-if [ -z "$WEB_DIR" ]; then
+if [ -f $DOCKER_ENV ]; then
+    echo Using settings from $DOCKER_ENV 
+    source $DOCKER_ENV
+else
     echo Plese create a .docker-env file and specify
     echo WEB_DIR=app
     echo CUPS_PORT=8666
@@ -53,7 +59,7 @@ y | Y)
     # this stops the problem of github asking for new tokens 
     # every time you do composer install in the container
     
-    docker run --name $CONTAINER_NAME \
+    docker run --restart unless-stopped --name $CONTAINER_NAME \
         -v ${VOLUME}:/var/www/${WEB_DIR}:Z -d \
         -v ~/.composer/docker-cache/:/root/.composer:cached \
         -p ${APACHE_PORT}:80 \
@@ -66,9 +72,12 @@ y | Y)
         echo Changing root password
         echo "root:${PASSWORD}" | docker exec -i ${CONTAINER_NAME} chpasswd
         # doesn't work because cups is not up when this is run
-        # docker exec -i ${CONTAINER_NAME} lpadmin -p EMAIL_ONLY -E -v file:/dev/null
+	echo Add black hole printer
+        sleep 4
+        docker exec -i ${CONTAINER_NAME} lpadmin -p EMAIL_ONLY -E -v file:/dev/null
         
         # null printer
+        # sleep 4
         # lpadmin -p BLACK_HOLE -E -v file:///dev/null
 
     fi
