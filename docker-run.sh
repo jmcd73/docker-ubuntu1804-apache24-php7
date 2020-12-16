@@ -53,7 +53,7 @@ y | Y)
     # this stops the problem of github asking for new tokens 
     # every time you do composer install in the container
     
-    docker run --name $CONTAINER_NAME \
+    docker run --restart unless-stopped --name $CONTAINER_NAME \
         -v ${VOLUME}:/var/www/${WEB_DIR}:Z -d \
         -v ~/.composer/docker-cache/:/root/.composer:cached \
         -p ${APACHE_PORT}:80 \
@@ -65,6 +65,7 @@ y | Y)
     if [ -n "${PASSWORD}" ]; then
         echo Changing root password
         echo "root:${PASSWORD}" | docker exec -i ${CONTAINER_NAME} chpasswd
+	sleep 4
         docker exec -i ${CONTAINER_NAME} lpadmin -p EMAIL_ONLY -E -v file:/dev/null
         
         # null printer
