@@ -47,7 +47,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     locales \
     git \
     unzip \
-    php-xdebug \
+    php-dev \
+    autoconf \
+    automake \
     xz-utils \
     libgl1 \
     libqt5x11extras5 \
@@ -126,6 +128,18 @@ COPY config/docker-entrypoint.sh /usr/local/bin/
 # this is eventually changed from /var/www/PDF to 
 # /var/www/${WEB_DIR}/PDF by docker-entrypoint.sh
 RUN sed -i.bak -e "s+Out.*+Out /var/www/PDF+g" /etc/cups/cups-pdf.conf
+
+
+RUN mkdir /xdebug && cd /xdebug && \
+wget http://xdebug.org/files/xdebug-3.0.4.tgz && \
+tar -xvf xdebug-3.0.4.tgz && \
+cd xdebug-3.0.4 && \
+phpize && \
+./configure && make && \
+cp modules/xdebug.so /usr/lib/php/20190902 && \
+echo "zend_extension = /usr/lib/php/20190902/xdebug.so" > /etc/php/7.4/mods-available/xdebug.ini && \
+phpenmod xdebug && \
+rm -rf /xdebug
 
 RUN mkdir /build && cd /build && \
 wget https://downloads.sourceforge.net/project/zint/zint/2.6.3/zint-2.6.3_final.tar.gz && \
