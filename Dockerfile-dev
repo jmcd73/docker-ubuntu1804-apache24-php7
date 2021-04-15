@@ -122,6 +122,7 @@ COPY config/cups/cups-pdf.conf /etc/cups/
 COPY config/cups/printers.conf /etc/cups/
 COPY config/cups/PDF.ppd /etc/cups/ppd/
 COPY config/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # this is eventually changed from /var/www/PDF to 
 # /var/www/${WEB_DIR}/PDF by docker-entrypoint.sh
