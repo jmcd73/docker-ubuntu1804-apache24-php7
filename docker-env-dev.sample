@@ -1,0 +1,11 @@
+# to use copy this to .docker-env
+
+BUILD=dev
+WEB_DIR=${BUILD}
+PORT_SUFFIX=35
+VERSION=v${PORT_SUFFIX}
+CUPS_PORT=86${PORT_SUFFIX}
+APACHE_PORT=80${PORT_SUFFIX}
+DOCKER_TAG=tgn/tgn-wms-${BUILD}:${VERSION}
+VOLUME=~/onedrive/sites/afewms/
+CONTAINER_NAME=${WEB_DIR}
