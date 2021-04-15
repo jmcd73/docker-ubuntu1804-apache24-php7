@@ -112,6 +112,8 @@ ENV LC_ALL "en_AU.UTF-8"
 
 # Update php.ini
 COPY config/php/php.conf /etc/php/7.4/apache2/php.ini
+COPY config/php/xdebug.conf /etc/php/7.4/apache2/conf.d/25-xdebug.ini
+COPY config/php/xdebug.conf /etc/php/7.4/cli/conf.d/25-xdebug.ini
 
 RUN sed -ibak -e s+/usr/lib/cgi-bin+/var/www/cgi-bin+g /etc/apache2/conf-enabled/serve-cgi-bin.conf
 
