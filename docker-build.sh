@@ -11,5 +11,5 @@ else
     exit 1
 fi
 
-docker build --network host -f Dockerfile-${BUILD} -t ${DOCKER_TAG} .
+docker build --no-cache --network host -f Dockerfile-${BUILD} -t ${DOCKER_TAG} .
 
