@@ -1,4 +1,5 @@
-# to use copy this to .docker-env
+# copy this to the parent directory 
+# and rename to .docker-env
 
 BUILD=prod
 WEB_DIR=${BUILD}

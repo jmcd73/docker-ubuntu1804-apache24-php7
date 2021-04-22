@@ -2,6 +2,7 @@ FROM ubuntu:20.04
 LABEL maintainer="James McDonald <james@toggen.com.au>"
 LABEL description="Ubuntu 20.04+, Apache 2.4+, PHP 7.4+, Glabels 3.4.1"
 
+# This is the production docker file
 # docker build -t toggen/tgn-img:20190614.2 .
 
 # Environments vars

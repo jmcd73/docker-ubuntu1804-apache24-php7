@@ -1,5 +1,8 @@
 # to use copy this to .docker-env
 
+# copy this to the parent directory 
+# and rename to .docker-env
+
 BUILD=dev
 WEB_DIR=${BUILD}
 PORT_SUFFIX=35
