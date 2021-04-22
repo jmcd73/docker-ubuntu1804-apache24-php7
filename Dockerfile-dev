@@ -57,7 +57,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y --fix-missing install apache2 \
     nodejs \
     xvfb \
     cmake \
-    php-mailparse
+    php-mailparse \
+    iputils-ping
+
+    
 
 # installs xvfb-run for allowing glabels-batch-qt to run
 RUN apt-get -y build-dep glabels

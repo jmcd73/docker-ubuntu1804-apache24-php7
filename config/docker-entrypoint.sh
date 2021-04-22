@@ -12,7 +12,7 @@ if [ "$1" = '/usr/bin/supervisord' ]; then
     fi
 
     if [ ! -f "${APACHE_CONF}.init" ]; then
-       sed -i.init -e "s+Alias.*+Alias /${WEB_DIR} /var/www/${WEB_DIR}/app/webroot+g" ${APACHE_CONF}
+       sed -i.init -e "s+Alias.*+Alias /${WEB_DIR} /var/www/${WEB_DIR}/webroot+g" ${APACHE_CONF}
     fi
 
 fi
